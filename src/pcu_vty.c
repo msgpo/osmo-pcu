@@ -257,6 +257,9 @@ static int config_write_pcu(struct vty *vty)
 	if (strcmp(bts->pcu_sock_path, PCU_SOCK_DEFAULT))
 		vty_out(vty, " pcu-socket %s%s", bts->pcu_sock_path, VTY_NEWLINE);
 
+	if (bts->default_timing_advance >= 0)
+		vty_out(vty, " default-timing-advance %d%s", bts->default_timing_advance, VTY_NEWLINE);
+
 	for (i = 0; i < 32; i++) {
 		unsigned int cs = (1 << i);
 		if (bts->gsmtap_categ_mask & cs) {
@@ -611,6 +614,19 @@ DEFUN(cfg_pcu_window_size,
 		uint16_t f = atoi(argv[1]);
 		bts->ws_pdch = f;
 	}
+
+	return CMD_SUCCESS;
+}
+
+DEFUN(cfg_default_timing_advance,
+      cfg_default_timing_advance_cmd,
+      "default-timing-advance <0-220>",
+      "default-timing-advance hack\n")
+{
+	struct gprs_rlcmac_bts *bts = bts_main_data();
+	int b = atoi(argv[0]);
+
+	bts->default_timing_advance = b;
 
 	return CMD_SUCCESS;
 }
@@ -1189,6 +1205,7 @@ int pcu_vty_init(const struct log_info *cat)
 	install_element(PCU_NODE, &cfg_pcu_gsmtap_categ_cmd);
 	install_element(PCU_NODE, &cfg_pcu_no_gsmtap_categ_cmd);
 	install_element(PCU_NODE, &cfg_pcu_sock_cmd);
+	install_element(PCU_NODE, &cfg_default_timing_advance_cmd);
 
 	install_element_ve(&show_bts_stats_cmd);
 	install_element_ve(&show_tbf_cmd);

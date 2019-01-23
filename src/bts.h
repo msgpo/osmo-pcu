@@ -151,6 +151,9 @@ struct gprs_rlcmac_bts {
 	/* State for dynamic algorithm selection */
 	int multislot_disabled;
 
+	/* default-timing-advance */
+	int default_timing_advance;
+
 	/**
 	 * Point back to the C++ object. This is used during the transition
 	 * period.

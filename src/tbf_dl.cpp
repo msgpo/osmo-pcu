@@ -141,8 +141,10 @@ static int tbf_new_dl_assignment(struct gprs_rlcmac_bts *bts,
 	/* TODO: if (!ms) create MS before tbf_alloc is called? */
 
         // force default_timing_advance
-	if (bts->default_timing_advance >= 0)
+	if (bts->default_timing_advance >= 0) {
+		LOGP(DTBF, LOGL_NOTICE, "Setting TA to %u\n", bts->default_timing_advance);
 		ta = bts->default_timing_advance;
+	}
 
 	if (ul_tbf && ul_tbf->m_contention_resolution_done
 	 && !ul_tbf->m_final_ack_sent) {

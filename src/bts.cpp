@@ -217,6 +217,7 @@ BTS::BTS()
 	memset(&m_bts, 0, sizeof(m_bts));
 	m_bts.bts = this;
 	m_bts.dl_tbf_preemptive_retransmission = true;
+	m_bts.app_info = NULL;
 
 	/* initialize back pointers */
 	for (size_t trx_no = 0; trx_no < ARRAY_SIZE(m_bts.trx); ++trx_no) {
@@ -259,6 +260,11 @@ void BTS::cleanup()
 	if (m_statg) {
 		osmo_stat_item_group_free(m_statg);
 		m_statg = NULL;
+	}
+
+	if (m_bts.app_info) {
+		msgb_free(m_bts.app_info);
+		m_bts.app_info = NULL;
 	}
 }
 

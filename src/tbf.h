@@ -121,8 +121,11 @@ enum tbf_egprs_counters {
 #define LOGPTBF(tbf, level, fmt, args...) LOGP(DTBF, level, "%s " fmt, tbf_name(tbf), ## args)
 
 enum tbf_timers {
-	/* internal assign/reject timer */
+	/* internal PACCH assign/reject timer */
 	T0,
+
+	/* Time to wait after IMM.ASS confirm until contention resolution procedure times out. */
+	T3141,
 
 	/* Wait for reuse of USF and TFI(s) after the MS uplink assignment for this TBF is invalid. */
 	T3169,

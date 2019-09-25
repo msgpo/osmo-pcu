@@ -630,7 +630,7 @@ bool gprs_rlcmac_tbf::timers_pending(enum tbf_timers t)
 		return osmo_timer_pending(&Tarr[t]);
 
 	/* we don't start with T0 because it's internal timer which requires special handling */
-	for (i = T3169; i < T_MAX; i++)
+	for (i = T3141; i < T_MAX; i++)
 		if (osmo_timer_pending(&Tarr[i]))
 			return true;
 
@@ -658,6 +658,7 @@ static inline void tbf_timeout_free(struct gprs_rlcmac_tbf *tbf, enum tbf_timers
 
 #define T_CBACK(t, diag) static void cb_##t(void *_tbf) { tbf_timeout_free((struct gprs_rlcmac_tbf *)_tbf, t, diag); }
 
+T_CBACK(T3141, true)
 T_CBACK(T3169, true)
 T_CBACK(T3191, true)
 T_CBACK(T3193, false)
@@ -706,6 +707,9 @@ void gprs_rlcmac_tbf::t_start(enum tbf_timers t, int T, const char *reason, bool
 	switch(t) {
 	case T0:
 		Tarr[t].cb = tbf_timer_cb;
+		break;
+	case T3141:
+		Tarr[t].cb = cb_T3141;
 		break;
 	case T3169:
 		Tarr[t].cb = cb_T3169;

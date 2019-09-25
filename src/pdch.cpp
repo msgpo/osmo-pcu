@@ -335,6 +335,7 @@ void gprs_rlcmac_pdch::rcv_control_ack(Packet_Control_Acknowledgement_t *packet,
 		TBF_SET_STATE(new_tbf, GPRS_RLCMAC_FLOW);
 		/* stop pending assignment timer */
 		new_tbf->t_stop(T0, "control acked (DL-TBF)");
+		/* TODO: stop T3141 here? */
 		if (new_tbf->check_n_clear(GPRS_RLCMAC_FLAG_TO_DL_ASS))
 			LOGPTBF(new_tbf, LOGL_NOTICE, "Recovered downlink assignment\n");
 

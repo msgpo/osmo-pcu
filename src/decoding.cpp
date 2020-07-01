@@ -266,6 +266,9 @@ int Decoding::rlc_data_from_ul_data(
 	if (chunks_size == 0)
 		return num_chunks;
 
+	LOGP(DRLCMACUL, LOGL_NOTICE, "pespin: offset=%u num_chunks=%d e=%d\n",
+		offs, num_chunks, rdbi->e ? 1 : 0);
+
 	/* LLC */
 	for (i = 0; i < num_chunks; i++) {
 		chunks[i].offset = offs;

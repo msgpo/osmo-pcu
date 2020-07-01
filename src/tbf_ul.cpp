@@ -224,11 +224,12 @@ int gprs_rlcmac_ul_tbf::rcv_data_block_acknowledged(
 		bool need_rlc_data = false;
 
 		LOGPTBFUL(this, LOGL_DEBUG,
-			  "Got %s RLC data block: CV=%d, BSN=%d, SPB=%d, PI=%d, E=%d, TI=%d, bitoffs=%d\n",
+			  "Got %s RLC data block: CV=%d, BSN=%d, SPB=%d, PI=%d, E=%d, TI=%d, bitoffs=%d, data_len=%d\n",
 			  mcs_name(rlc->cs),
 			  rdbi->cv, rdbi->bsn, rdbi->spb,
 			  rdbi->pi, rdbi->e, rdbi->ti,
-			  rlc->data_offs_bits[block_idx]);
+			  rlc->data_offs_bits[block_idx],
+			  rdbi->data_len);
 
 		/* Check whether the block needs to be decoded */
 
@@ -277,6 +278,7 @@ int gprs_rlcmac_ul_tbf::rcv_data_block_acknowledged(
 			block->len =
 				Decoding::rlc_copy_to_aligned_buffer(rlc,
 				block_idx, data, rlc_data);
+			LOGPTBFUL(this, LOGL_NOTICE, "pespin: rdbi->data_len=%d, block->len=%d\n", rdbi->data_len, block->len);
 		}
 
 		LOGPTBFUL(this, LOGL_DEBUG,
